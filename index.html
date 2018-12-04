@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="./assets/img/common/favicon_lorex.ico">
+    <title>LOREX Secure Video Player</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//www.lorexpetertechnology.com/flircss/fx-blank.css" type="text/css" />
+
+<script type='text/javascript' src='LOREX.webpss-3.1.2.83.min.js'></script>
+
+
+    <script type="text/javascript">
+        function hasItem(sKey) {
+            return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+        }
+        
+        var isUAT = window.location.host.indexOf("uat") > -1
+                 || window.location.host.indexOf("localhost") > -1
+                 || window.location.host.indexOf("int-web") > -1;
+
+        if (!hasItem("fcsid_env")) {
+            document.cookie = "fcsid_env=" + (isUAT ? "uat": "") + "; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+        }
+
+        if (!hasItem("fcsid_refresh")) {
+            var path = isUAT ? "uat11" : "www";
+            window.location.href = 'https://' + path + ".lorexpetertechnology.com/lorexus/profile/login?successUrl=" + window.location.href;
+        }
+    </script>
+</head>
+
+<body>
+    <div id="bodyContainer">
+        <div id="supportMainbar">
+            <div class="genarticle">
+                <script type="text/javascript" src="//d3oi53q9kbajtk.cloudfront.net/jwplayer7/jwplayer.js"></script>
+                <script type="text/javascript">jwplayer.key = "ur9KY+qrtUYGWRszk8OrYnW0iTCIVMPeH+CH358ucBI=";</script>
+                <div ng-app="LOREX.webpss" ng-controller="AppCtrl" class="webpss-style bg-white app-min-height" ng-strict-di>
+                    <div ng-if="inLogInProccess" class="page-spinner-container">
+                        <div class="f-spinner"></div>
+                    </div>
+                    <div ng-if="!inLogInProccess" class="container-fluid no-padding use_available_height app-min-size" ng-class="{'login-page' : isLoginPage()}" ng-style="{'overflow': 'inherit'}">
+                        <div class="env-banner" ng-if="showEnv" ng-cloak>{{env | uppercase}}</div>
+                        <div ui-view="login-view" ng-show="isLoginPage()"></div>
+                        <div ui-view="main" ng-show="isMain()"></div>
+                        <div ui-view="errors-view" ng-show="isErrorPage()"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear10"></div>
+</body>
+
+</html>
